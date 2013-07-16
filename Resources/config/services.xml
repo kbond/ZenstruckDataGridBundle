@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zenstruck_datagrid.grid.class">Zenstruck\DataGridBundle\Grid</parameter>
+        <parameter key="zenstruck_datagrid.paginated_grid.class">Zenstruck\DataGridBundle\PaginatedGrid</parameter>
+        <parameter key="zenstruck_datagrid.field_collection.class">Zenstruck\DataGridBundle\Field\FieldCollection</parameter>
+        <parameter key="zenstruck_datagrid.filter.class">Zenstruck\DataGridBundle\Filter\RequestFilter</parameter>
+        <parameter key="zenstruck_datagrid.executor.class">Zenstruck\DataGridBundle\Executor\DoctrineORMExecutor</parameter>
+        <parameter key="zenstruck_datagrid.pager.class">Zenstruck\DataGridBundle\Pager\Pagerfanta\DoctrineORMPagerfantaPager</parameter>
+        <parameter key="zenstruck_datagrid.twig_extension.class">Zenstruck\DataGridBundle\Twig\GridExtension</parameter>
+    </parameters>
+
+    <services>
+        <service id="zenstruck_datagrid.filter" class="%zenstruck_datagrid.filter.class%" public="false">
+            <argument type="service" id="request" strict="false" />
+        </service>
+        <service id="zenstruck_datagrid.pager" class="%zenstruck_datagrid.pager.class%" public="false" />
+        <service id="zenstruck_datagrid.twig_extension" class="%zenstruck_datagrid.twig_extension.class%" public="false">
+            <argument>%zenstruck_datagrid.default_template%</argument>
+            <tag name="twig.extension" />
+        </service>
+    </services>
+</container>

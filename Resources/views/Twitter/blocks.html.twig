@@ -1,0 +1,85 @@
+{% block grid %}
+    <table id="{{ grid.name }}-grid" class="table table-striped table-hover">
+        {{ grid_header(grid) }}
+        {{ grid_body(grid) }}
+        {{ grid_footer(grid) }}
+    </table>
+    {{ grid_pager(grid) }}
+{% endblock %}
+
+{% block grid_header %}
+    <thead>
+        <tr>
+            {% for field in grid.fields.visible %}
+                {{ grid_label(field, grid) }}
+            {% endfor %}
+            {{ grid_action_label(grid) }}
+        </tr>
+    </thead>
+{% endblock %}
+
+{% block grid_body %}
+    <tbody>
+        {% for object in grid.results %}
+            <tr>
+                {% for field in grid.fields.visible %}
+                    {{ grid_value(object, field, grid) }}
+                {% endfor %}
+                {{ grid_action(object, grid) }}
+            </tr>
+        {% else %}
+            {{ grid_no_results(grid) }}
+        {% endfor %}
+    </tbody>
+{% endblock %}
+
+{% block grid_label %}
+    <th{% if field.align %} class="text-{{ field.align }}"{% endif %}>{{ field.label ? field.label|trans : field.name|humanize|trans }}</th>
+{% endblock %}
+
+{% block grid_footer %}
+    {% if grid.results|length %}
+        <tfoot>
+        <tr>
+            {% spaceless %}
+                {% if paginated %}
+                    <td>{{ grid.results|length }} Results ({{ grid.totalResults }} Total)</td>
+                    <td colspan="99" class="text-right">Page {{ grid.currentPage }} of {{ grid.totalPages }}</td>
+                {% else %}
+                    <td colspan="99">{{ grid.results|length }} Results</td>
+                {% endif %}
+            {% endspaceless %}
+        </tr>
+        </tfoot>
+    {% endif %}
+{% endblock %}
+
+{% block grid_action_label %}{% endblock %}
+{% block grid_action %}{% endblock %}
+
+{% block grid_no_results %}
+    <tr>
+        <td colspan="99">No Results</td>
+    </tr>
+{% endblock %}
+
+{% block grid_pager %}
+    {{ dump(pager) }}
+    {% if pager %}
+        {{ pagerfanta(pager.paginator, 'twitter_bootstrap') }}
+    {% endif %}
+{% endblock %}
+
+{% block grid_value %}
+    {% spaceless %}
+        <td{% if field.align %} class="text-{{ field.align }}"{% endif %}>
+            {% if type == 'date' %}
+                {{ value|date(field.format) }}
+            {% elseif value %}
+                {{ value }}
+            {% else %}
+                {{ field.default|raw }}
+            {% endif %}
+        </td>
+    {% endspaceless %}
+{% endblock %}
