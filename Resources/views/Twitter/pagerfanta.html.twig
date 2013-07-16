@@ -1,0 +1,5 @@
+{% block grid_pager %}
+    {% if pager %}
+        {{ pagerfanta(pager.paginator, 'twitter_bootstrap') }}
+    {% endif %}
+{% endblock %}

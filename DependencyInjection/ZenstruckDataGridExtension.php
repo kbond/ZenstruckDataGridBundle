@@ -2,6 +2,7 @@
 
 namespace Zenstruck\DataGridBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -58,6 +59,10 @@ class ZenstruckDataGridExtension extends Extension
             $gridDef = new Definition($gridClass, array($name, $fieldsDef, $filterDef, $executorDef));
 
             if ($grid['paginated']) {
+                if (!class_exists('Pagerfanta\Pagerfanta')) {
+                    throw new InvalidConfigurationException(sprintf('Pagerfanta must be installed to use the paginated feature for grid "%s".', $name));
+                }
+
                 $gridDef->setClass($paginatedGridClass)->addArgument($pagerDef);
             }
 

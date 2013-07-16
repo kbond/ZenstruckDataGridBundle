@@ -63,12 +63,7 @@
     </tr>
 {% endblock %}
 
-{% block grid_pager %}
-    {{ dump(pager) }}
-    {% if pager %}
-        {{ pagerfanta(pager.paginator, 'twitter_bootstrap') }}
-    {% endif %}
-{% endblock %}
+{% block grid_pager %}{% endblock %}
 
 {% block grid_value %}
     {% spaceless %}

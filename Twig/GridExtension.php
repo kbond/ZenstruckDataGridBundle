@@ -4,7 +4,6 @@ namespace Zenstruck\DataGridBundle\Twig;
 
 use Zenstruck\DataGridBundle\Field\Field;
 use Zenstruck\DataGridBundle\Grid;
-use Zenstruck\DataGridBundle\Pager\Pagerfanta\PagerfantaPager;
 use Zenstruck\DataGridBundle\PaginatedGrid;
 
 /**
@@ -106,8 +105,8 @@ class GridExtension extends \Twig_Extension
     {
         $pager = null;
 
-        if (($grid instanceof PaginatedGrid) && (($pagerfanta = $grid->getPager()) instanceof PagerfantaPager) && $this->environment->hasExtension('pagerfanta')) {
-            $pager = $pagerfanta;
+        if ($grid instanceof PaginatedGrid) {
+            $pager = $grid->getPager();
         }
 
         return $this->renderBlock('grid_pager', array('pager' => $pager, 'grid' => $grid));
@@ -173,6 +172,14 @@ class GridExtension extends \Twig_Extension
 
         if ($template instanceof \Twig_Template) {
             $this->templates[] = $template;
+        }
+
+        if ($this->environment->hasExtension('pagerfanta')) {
+            try {
+                $this->templates[] = $this->environment->loadTemplate(str_replace('blocks', 'pagerfanta', $this->defaultTemplate));
+            } catch (\Twig_Error_Loader $e) {
+                //skip
+            }
         }
 
         $this->templates[] = $this->environment->loadTemplate($this->defaultTemplate);
