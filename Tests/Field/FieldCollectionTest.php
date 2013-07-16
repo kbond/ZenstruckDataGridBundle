@@ -91,8 +91,8 @@ class FieldCollectionTest extends \PHPUnit_Framework_TestCase
             'bar' => array()
         ));
         $results = $fieldCollection->setSortDirections(array('foo' => Field::SORT_DESC));
-        $this->assertEquals(Field::SORT_ASC, $results->get('foo')->getSortDirection());
-        $this->assertEquals(Field::SORT_ASC, $results->get('bar')->getSortDirection());
+        $this->assertNull($results->get('foo')->getSortDirection());
+        $this->assertNull($results->get('bar')->getSortDirection());
 
         $fieldCollection = new FieldCollection(array(
             'foo' => array('sortable' => true),
@@ -100,7 +100,7 @@ class FieldCollectionTest extends \PHPUnit_Framework_TestCase
         ));
         $results = $fieldCollection->setSortDirections(array('foo' => Field::SORT_DESC));
         $this->assertEquals(Field::SORT_DESC, $results->get('foo')->getSortDirection());
-        $this->assertEquals(Field::SORT_ASC, $results->get('bar')->getSortDirection());
+        $this->assertNull($results->get('bar')->getSortDirection());
     }
 
     public function testIterate()

@@ -5,7 +5,6 @@ namespace Zenstruck\DataGridBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Zenstruck\DataGridBundle\Field\Field;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -72,7 +71,7 @@ class Configuration implements ConfigurationInterface
                     ->booleanNode('filterable')->defaultFalse()->end()
                     ->scalarNode('filter_value')->defaultNull()->end()
                     ->booleanNode('sortable')->defaultFalse()->end()
-                    ->scalarNode('sort_direction')->defaultValue(Field::SORT_ASC)->end()
+                    ->scalarNode('sort_direction')->defaultNull()->end()
                     ->scalarNode('format')->defaultNull()->end()
                     ->scalarNode('align')->defaultNull()->end()
                     ->scalarNode('default')->defaultNull()->end()

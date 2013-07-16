@@ -1,0 +1,39 @@
+th a.sortable {
+    display: block;
+}
+th a.sortable span {
+    display: inline-block;
+    padding-right: 14px;
+    position: relative;
+}
+th a.sortable b {
+    position: absolute;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    content: "";
+    right: 0;
+    top: 50%;
+}
+th a.sortable b.sort-desc, th a.sortable:hover b.sort-asc, th a.sortable:hover b.sort-desc-hover {
+    border-bottom: none;
+    border-top: 4px solid #000000;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+th a.sortable b.sort-asc, th a.sortable:hover b.sort-desc, th a.sortable:hover b.sort-asc-hover {
+    border-top: none;
+    border-bottom: 4px solid #000000;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+th a.sortable b.sort.sort-asc {
+    top: 30%;
+}
+th a.sortable b.sort.sort-desc {
+    top: 60%;
+}
+th a.sortable:hover b.sort {
+    display: none;
+}

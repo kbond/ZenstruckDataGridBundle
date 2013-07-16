@@ -34,7 +34,25 @@
 {% endblock %}
 
 {% block grid_label %}
-    <th{% if field.align %} class="text-{{ field.align }}"{% endif %}>{{ field.label ? field.label|trans : field.name|humanize|trans }}</th>
+    {% spaceless %}
+        <th{% if field.align %} class="text-{{ field.align }}"{% endif %}>
+            {% set value = field.label ? field.label|trans : field.name|humanize|trans %}
+            {% if field.sortable %}
+                <a href="" class="sortable">
+                    <span>
+                        {{ value }}
+                        {% if not field.sortDirection %}
+                            <b class="sort-asc sort"></b>
+                            <b class="sort-desc sort"></b>
+                        {% endif %}
+                        <b class="sort-{{ field.sortDirection|default(field.oppositeSortDirection~'-hover')|lower }}"></b>
+                    </span>
+                </a>
+            {% else %}
+                {{ value }}
+            {% endif %}
+        </th>
+    {% endspaceless %}
 {% endblock %}
 
 {% block grid_footer %}

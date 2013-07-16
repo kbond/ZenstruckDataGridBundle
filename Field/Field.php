@@ -27,7 +27,7 @@ class Field
 
     public static function getAvailableSortDirections()
     {
-        return array(static::SORT_ASC, static::SORT_DESC);
+        return array(null, static::SORT_ASC, static::SORT_DESC);
     }
 
     public function __construct($name, array $options = array())
@@ -39,7 +39,7 @@ class Field
                 'filterable' => false,
                 'filter_value' => null,
                 'sortable' => false,
-                'sort_direction' => static::SORT_ASC,
+                'sort_direction' => null,
                 'format' => null,
                 'align' => null,
                 'default' => null
@@ -188,7 +188,7 @@ class Field
 
     public function getOppositeSortDirection()
     {
-        return $this->sortDirection === static::SORT_ASC ? static::SORT_DESC : static::SORT_ASC;
+        return in_array($this->sortDirection, array(null, static::SORT_ASC)) ? static::SORT_DESC : static::SORT_ASC;
     }
 
     /**

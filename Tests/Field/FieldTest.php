@@ -16,7 +16,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($field->getLabel());
         $this->assertFalse($field->isFilterable());
         $this->assertNull($field->getFilterValue());
-        $this->assertEquals(Field::SORT_ASC, $field->getSortDirection());
+        $this->assertNull($field->getSortDirection());
         $this->assertTrue($field->isVisible());
 
         $field = new Field('foo', array(
@@ -60,12 +60,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         ));
         $field->setSortDirection(Field::SORT_DESC);
         $this->assertEquals(Field::SORT_DESC, $field->getSortDirection());
-
-        // default
-        $field = new Field('foo', array(
-            'sortable' => true
-        ));
-        $this->assertEquals(Field::SORT_ASC, $field->getSortDirection());
 
         // set non sortable field
         $this->setExpectedException('RuntimeException');

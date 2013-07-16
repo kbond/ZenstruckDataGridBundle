@@ -50,7 +50,7 @@ class RequestFilterTest extends \PHPUnit_Framework_TestCase
             new Field('bar')
         ));
         $results = $filter->filter($fieldCollection);
-        $this->assertEquals(Field::SORT_ASC, $results->get('foo')->getSortDirection());
+        $this->assertNull($results->get('foo')->getSortDirection());
 
         $filter = new RequestFilter(Request::create(sprintf('/foo?%s[foo]=DESC', RequestFilter::PARAM_SORT)));
         $fieldCollection = new FieldCollection(array(
@@ -67,7 +67,7 @@ class RequestFilterTest extends \PHPUnit_Framework_TestCase
             new Field('bar')
         ));
         $results = $filter->filter($fieldCollection);
-        $this->assertEquals(Field::SORT_ASC, $results->get('foo')->getSortDirection());
+        $this->assertNull($results->get('foo')->getSortDirection());
     }
 
     public function testNoQuery()
@@ -81,8 +81,8 @@ class RequestFilterTest extends \PHPUnit_Framework_TestCase
         $results = $filter->filter($fieldCollection);
         $this->assertNull($results->get('foo')->getFilterValue());
         $this->assertNull($results->get('bar')->getFilterValue());
-        $this->assertEquals(Field::SORT_ASC, $results->get('foo')->getSortDirection());
-        $this->assertEquals(Field::SORT_ASC, $results->get('bar')->getSortDirection());
+        $this->assertNull($results->get('foo')->getSortDirection());
+        $this->assertNull($results->get('bar')->getSortDirection());
 
         $fieldCollection = new FieldCollection(array(
             new Field('foo', array('filterable' => true)),
@@ -91,7 +91,7 @@ class RequestFilterTest extends \PHPUnit_Framework_TestCase
         $results = $filter->filter($fieldCollection);
         $this->assertNull($results->get('foo')->getFilterValue());
         $this->assertNull($results->get('bar')->getFilterValue());
-        $this->assertEquals(Field::SORT_ASC, $results->get('foo')->getSortDirection());
-        $this->assertEquals(Field::SORT_ASC, $results->get('bar')->getSortDirection());
+        $this->assertNull($results->get('foo')->getSortDirection());
+        $this->assertNull($results->get('bar')->getSortDirection());
     }
 }
