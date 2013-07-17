@@ -120,4 +120,14 @@ class RequestFilter implements PagerFilterInterface
     {
         return $this->request->get('max_per_page', PagerInterface::DEFAULT_MAX_PER_PAGE);
     }
+
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    public function getRouteParams()
+    {
+        return $this->routeParams;
+    }
 }

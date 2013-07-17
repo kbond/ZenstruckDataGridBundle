@@ -3,6 +3,7 @@
 namespace Zenstruck\DataGridBundle\Twig;
 
 use Zenstruck\DataGridBundle\Field\Field;
+use Zenstruck\DataGridBundle\Filter\RequestFilter;
 use Zenstruck\DataGridBundle\Grid;
 use Zenstruck\DataGridBundle\PaginatedGrid;
 
@@ -104,12 +105,24 @@ class GridExtension extends \Twig_Extension
     public function renderPager(Grid $grid)
     {
         $pager = null;
+        $pagerParams = array();
 
         if ($grid instanceof PaginatedGrid) {
             $pager = $grid->getPager();
+
+            if (($filter = $grid->getFilter()) instanceof RequestFilter) {
+                $pagerParams = array(
+                    'routeName' => $filter->getRoute(),
+                    'routeParams' => $filter->getRouteParams()
+                );
+            }
         }
 
-        return $this->renderBlock('grid_pager', array('pager' => $pager, 'grid' => $grid));
+        return $this->renderBlock('grid_pager', array(
+                'pager' => $pager,
+                'grid' => $grid,
+                'pager_params' => $pagerParams
+            ));
     }
 
     public function renderHeader(Grid $grid)
