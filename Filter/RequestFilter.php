@@ -24,6 +24,7 @@ class RequestFilter implements PagerFilterInterface
     protected $router;
     protected $filterParam;
     protected $sortParam;
+    protected $route;
     protected $routeParams;
 
     public function __construct(Request $request, RouterInterface $router, $filterParam = self::PARAM_FILTER, $sortParam = self::PARAM_SORT)
@@ -32,6 +33,7 @@ class RequestFilter implements PagerFilterInterface
         $this->router = $router;
         $this->filterParam = $filterParam;
         $this->sortParam = $sortParam;
+        $this->route = $this->request->get('_route');
         $this->routeParams = array_merge($this->request->query->all(), $this->request->attributes->get('_route_params', array()));
     }
 
@@ -55,36 +57,58 @@ class RequestFilter implements PagerFilterInterface
         ;
     }
 
-    public function generateSortUri(Field $field = null, $direction = null)
+    public function generateSortUri($field, $direction)
     {
         $routeParams = $this->routeParams;
 
         if ($this->isSorted()) {
-            unset($routeParams[static::PARAM_SORT]);
+            unset($routeParams[$this->sortParam]);
         }
 
-        if ($field) {
-            $propertyPath = new PropertyPath(sprintf('[%s][%s]', static::PARAM_SORT, $field->getName()));
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
-            $propertyAccessor->setValue($routeParams, $propertyPath, $direction);
+        if ($field instanceof Field) {
+            $field = $field->getName();
         }
 
-        return $this->router->generate($this->request->get('_route'), $routeParams);
+        $propertyPath = new PropertyPath(sprintf('[%s][%s]', $this->sortParam, $field));
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyAccessor->setValue($routeParams, $propertyPath, $direction);
+
+        return $this->router->generate($this->route, $routeParams);
     }
 
-    public function generateFilterUri(Field $field, $direction)
+    public function generateFilterUri($field, $value)
     {
-        // TODO
+        $routeParams = $this->routeParams;
+
+        if ($field instanceof Field) {
+            $field = $field->getName();
+        }
+
+        $propertyPath = new PropertyPath(sprintf('[%s][%s]', $this->filterParam, $field));
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyAccessor->setValue($routeParams, $propertyPath, (string) $value);
+
+        return $this->router->generate($this->route, $routeParams);
+    }
+
+    public function generateResetUri()
+    {
+        $routeParams = $this->routeParams;
+
+        unset($routeParams[$this->sortParam]);
+        unset($routeParams[$this->filterParam]);
+
+        return $this->router->generate($this->route, $routeParams);
     }
 
     public function isSorted()
     {
-        return isset($this->routeParams[static::PARAM_SORT]);
+        return isset($this->routeParams[$this->sortParam]);
     }
 
     public function isFiltered()
     {
-        return isset($this->routeParams[static::PARAM_FILTER]);
+        return isset($this->routeParams[$this->filterParam]);
     }
 
     public function getCurrentPage()

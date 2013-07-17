@@ -18,20 +18,25 @@ interface FilterInterface
     public function filter(FieldCollection $fieldCollection);
 
     /**
-     * @param Field  $field
-     * @param string $direction
+     * @param Field|string $field
+     * @param string       $direction
      *
      * @return string
      */
-    public function generateSortUri(Field $field, $direction);
+    public function generateSortUri($field, $direction);
 
     /**
-     * @param Field  $field
-     * @param string $value
+     * @param Field|string $field
+     * @param string       $value
      *
      * @return string
      */
-    public function generateFilterUri(Field $field, $value);
+    public function generateFilterUri($field, $value);
+
+    /**
+     * @return string
+     */
+    public function generateResetUri();
 
     /**
      * @return bool

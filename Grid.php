@@ -132,4 +132,12 @@ class Grid
     {
         return $this->filter;
     }
+
+    /**
+     * @return ExecutorInterface
+     */
+    public function getExecutor()
+    {
+        return $this->executor;
+    }
 }
