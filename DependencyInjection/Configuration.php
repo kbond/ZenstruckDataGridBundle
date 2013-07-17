@@ -51,6 +51,7 @@ class Configuration implements ConfigurationInterface
                 ->defaultNull()
                 ->info('The service id for the generated grid. By default it is: "<bundle_prefix>.grid.<grid_name>".')
             ->end()
+            ->scalarNode('grid_class')->defaultNull()->end()
             ->scalarNode('executor_service')
                 ->defaultNull()
                 ->info('Customize the grid executor (must implement ExecutorInterface)')

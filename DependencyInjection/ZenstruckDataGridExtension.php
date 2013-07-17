@@ -56,14 +56,22 @@ class ZenstruckDataGridExtension extends Extension
                 $container->setDefinition($serviceId.'.executor', $executorDef);
             }
 
-            $gridDef = new Definition($gridClass, array($name, $fieldsDef, $filterDef, $executorDef));
-
-            if ($grid['paginated']) {
+            if ($grid['paginated'] && !$grid['grid_class']) {
                 if (!class_exists('Pagerfanta\Pagerfanta')) {
                     throw new InvalidConfigurationException(sprintf('Pagerfanta must be installed to use the paginated feature for grid "%s".', $name));
                 }
 
-                $gridDef->setClass($paginatedGridClass)->addArgument($pagerDef);
+                $gridClass = $paginatedGridClass;
+            } elseif ($grid['grid_class']) {
+                $gridClass = $grid['grid_class'];
+            }
+
+            $gridDef = new Definition($gridClass, array($name, $fieldsDef, $filterDef, $executorDef));
+
+            $reflectionClass = new \ReflectionClass($gridClass);
+
+            if ($paginatedGridClass === $reflectionClass->getName() || $reflectionClass->isSubclassOf('Zenstruck\DataGridBundle\PaginatedGrid')) {
+                $gridDef->addArgument($pagerDef);
             }
 
             $container->setDefinition($serviceId, $gridDef);
