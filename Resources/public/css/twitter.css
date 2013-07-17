@@ -14,7 +14,7 @@ th a.sortable b {
     vertical-align: top;
     content: "";
     right: 0;
-    top: 50%;
+    top: 45%;
 }
 th a.sortable b.sort-desc, th a.sortable:hover b.sort-asc, th a.sortable:hover b.sort-desc-hover {
     border-bottom: none;
@@ -29,10 +29,10 @@ th a.sortable b.sort-asc, th a.sortable:hover b.sort-desc, th a.sortable:hover b
     border-left: 4px solid transparent;
 }
 th a.sortable b.sort.sort-asc {
-    top: 30%;
+    top: 25%;
 }
 th a.sortable b.sort.sort-desc {
-    top: 60%;
+    top: 55%;
 }
 th a.sortable:hover b.sort {
     display: none;
