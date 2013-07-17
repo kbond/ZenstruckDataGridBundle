@@ -2,6 +2,7 @@
 
 namespace Zenstruck\DataGridBundle\Filter;
 
+use Zenstruck\DataGridBundle\Field\Field;
 use Zenstruck\DataGridBundle\Field\FieldCollection;
 
 /**
@@ -15,4 +16,30 @@ interface FilterInterface
      * @return FieldCollection
      */
     public function filter(FieldCollection $fieldCollection);
+
+    /**
+     * @param Field  $field
+     * @param string $direction
+     *
+     * @return string
+     */
+    public function generateSortUri(Field $field, $direction);
+
+    /**
+     * @param Field  $field
+     * @param string $value
+     *
+     * @return string
+     */
+    public function generateFilterUri(Field $field, $value);
+
+    /**
+     * @return bool
+     */
+    public function isSorted();
+
+    /**
+     * @return bool
+     */
+    public function isFiltered();
 }

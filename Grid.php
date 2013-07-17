@@ -124,4 +124,12 @@ class Grid
             throw new \RuntimeException('Must run ->execute() on Grid.');
         }
     }
+
+    /**
+     * @return FilterInterface
+     */
+    public function getFilter()
+    {
+        return $this->filter;
+    }
 }

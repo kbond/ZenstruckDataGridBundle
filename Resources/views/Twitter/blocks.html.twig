@@ -1,5 +1,5 @@
 {% block grid %}
-    <table id="{{ grid.name }}-grid" class="table table-striped table-hover">
+    <table id="{{ grid.name }}-grid" class="table table-striped table-hover table-condensed">
         {{ grid_header(grid) }}
         {{ grid_body(grid) }}
         {{ grid_footer(grid) }}
@@ -38,7 +38,7 @@
         <th{% if field.align %} class="text-{{ field.align }}"{% endif %}>
             {% set value = field.label ? field.label|trans : field.name|humanize|trans %}
             {% if field.sortable %}
-                <a href="" class="sortable">
+                <a href="{{ grid.filter.generateSortUri(field, field.oppositeSortDirection) }}" class="sortable">
                     <span>
                         {{ value }}
                         {% if not field.sortDirection %}

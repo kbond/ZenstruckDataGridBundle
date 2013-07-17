@@ -17,6 +17,7 @@
     <services>
         <service id="zenstruck_datagrid.filter" class="%zenstruck_datagrid.filter.class%" public="false">
             <argument type="service" id="request" strict="false" />
+            <argument type="service" id="router" />
         </service>
         <service id="zenstruck_datagrid.pager" class="%zenstruck_datagrid.pager.class%" public="false" />
         <service id="zenstruck_datagrid.twig_extension" class="%zenstruck_datagrid.twig_extension.class%" public="false">

@@ -7,6 +7,7 @@ namespace Zenstruck\DataGridBundle\Field;
  */
 class FieldCollection implements \Countable, \IteratorAggregate
 {
+    /** @var Field[] */
     protected $fields = array();
 
     /**
@@ -69,6 +70,32 @@ class FieldCollection implements \Countable, \IteratorAggregate
     }
 
     /**
+     * @return $this
+     */
+    public function clearSorts()
+    {
+        return $this->forAll(function(Field $field) {
+                if ($field->isSortable()) {
+                    $field->setSortDirection(null);
+                }
+            }
+        );
+    }
+
+    /**
+     * @return $this
+     */
+    public function clearFilters()
+    {
+        return $this->forAll(function(Field $field) {
+                if ($field->isFilterable()) {
+                    $field->setFilterValue(null);
+                }
+            }
+        );
+    }
+
+    /**
      * @param string $name
      *
      * @return Field
@@ -116,5 +143,14 @@ class FieldCollection implements \Countable, \IteratorAggregate
     public function getIterator()
     {
         return new \ArrayIterator($this->fields);
+    }
+
+    protected function forAll(\Closure $p)
+    {
+        foreach ($this->fields as $field) {
+            $p($field);
+        }
+
+        return $this;
     }
 }
