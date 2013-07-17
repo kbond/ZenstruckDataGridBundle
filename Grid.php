@@ -59,30 +59,6 @@ class Grid
     }
 
     /**
-     * @param string     $key
-     * @param mixed|null $default
-     *
-     * @return mixed
-     */
-    public function get($key, $default = null)
-    {
-        if (isset($this->parameters[$key])) {
-            return $this->parameters[$key];
-        }
-
-        return $default;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     */
-    public function set($key, $value)
-    {
-        $this->parameters[$key] = $value;
-    }
-
-    /**
      * @return FieldCollection
      */
     public function getFields()
@@ -131,13 +107,5 @@ class Grid
     public function getFilter()
     {
         return $this->filter;
-    }
-
-    /**
-     * @return ExecutorInterface
-     */
-    public function getExecutor()
-    {
-        return $this->executor;
     }
 }
