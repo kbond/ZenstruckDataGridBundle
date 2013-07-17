@@ -4,6 +4,10 @@
 
 Provides a sortable/filterable/paginated datagrid for your entities.
 
+[![Screenshot][1]][2]
+
+[View Demo][2]
+
 ## Full Default Configuration
 
 ```yaml
@@ -50,3 +54,6 @@ zenstruck_datagrid:
 * global filter
 * nested entites filter/sort
 * split out datagrid functionality into a separate library
+
+[1]: https://lh5.googleusercontent.com/-iUd_BIQr-W4/Uea71hXUX8I/AAAAAAAAKJo/VOsEvnMbq50/w956-h296-no/datagrid.png
+[2]: http://sandbox.zenstruck.com/articles
