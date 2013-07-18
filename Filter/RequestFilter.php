@@ -101,6 +101,15 @@ class RequestFilter implements PagerFilterInterface
         return $this->router->generate($this->route, $routeParams);
     }
 
+    public function getFilterValue($name)
+    {
+        if (isset($this->routeParams[$this->filterParam][$name])) {
+            return $this->routeParams[$this->filterParam][$name];
+        }
+
+        return null;
+    }
+
     public function isSorted()
     {
         return isset($this->routeParams[$this->sortParam]);

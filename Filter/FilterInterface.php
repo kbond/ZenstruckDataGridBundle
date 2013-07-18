@@ -18,6 +18,13 @@ interface FilterInterface
     public function filter(FieldCollection $fieldCollection);
 
     /**
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getFilterValue($name);
+
+    /**
      * @param Field|string $field
      * @param string       $direction
      *
