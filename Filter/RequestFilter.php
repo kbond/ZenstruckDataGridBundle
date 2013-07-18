@@ -86,7 +86,7 @@ class RequestFilter implements PagerFilterInterface
 
         $propertyPath = new PropertyPath(sprintf('[%s][%s]', $this->filterParam, $field));
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-        $propertyAccessor->setValue($routeParams, $propertyPath, (string) $value);
+        $propertyAccessor->setValue($routeParams, $propertyPath, $value);
 
         return $this->router->generate($this->route, $routeParams);
     }
