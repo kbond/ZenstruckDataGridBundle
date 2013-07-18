@@ -138,9 +138,9 @@ class FieldCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $fieldCollection = new FieldCollection(array(
             new Field('foo'),
-            new Field('bar', array('sortable' => true, 'sort_direction' => 'ASC'))
+            new Field('bar', array('sortable' => true, 'sort_direction' => 'asc'))
         ));
-        $this->assertEquals('ASC', $fieldCollection->get('bar')->getSortDirection());
+        $this->assertEquals('asc', $fieldCollection->get('bar')->getSortDirection());
 
         $fieldCollection->clearSorts();
         $this->assertNull($fieldCollection->get('bar')->getSortDirection());

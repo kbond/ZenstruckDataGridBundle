@@ -60,6 +60,10 @@ class FieldCollection implements \Countable, \IteratorAggregate
             if ($this->has($name) && $this->get($name)->isSortable()) {
                 $field = $this->get($name);
 
+                if (!is_null($direction)) {
+                    $direction = strtolower($direction);
+                }
+
                 if (in_array($direction, Field::getAvailableSortDirections())) {
                     $field->setSortDirection($direction);
                 }
