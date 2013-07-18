@@ -5,6 +5,7 @@ namespace Zenstruck\DataGridBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Zenstruck\DataGridBundle\Field\Field;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -72,7 +73,15 @@ class Configuration implements ConfigurationInterface
                     ->booleanNode('filterable')->defaultFalse()->end()
                     ->scalarNode('filter_value')->defaultNull()->end()
                     ->booleanNode('sortable')->defaultFalse()->end()
-                    ->scalarNode('sort_direction')->defaultNull()->end()
+                    ->scalarNode('sort_direction')
+                        ->defaultNull()
+                        ->validate()
+                            ->ifNotInArray(Field::getAvailableSortDirections())
+                            ->thenInvalid(sprintf('sort_direction must be one of: %s', implode(', ', array_map(function($value) {
+                                    return is_null($value) ? 'null' : sprintf('"%s"', $value);
+                                }, Field::getAvailableSortDirections()))))
+                        ->end()
+                    ->end()
                     ->scalarNode('format')->defaultNull()->end()
                     ->scalarNode('align')->defaultNull()->end()
                     ->scalarNode('default')->defaultNull()->end()

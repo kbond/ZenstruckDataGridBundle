@@ -38,7 +38,7 @@
         <th{% if field.align %} class="text-{{ field.align }}"{% endif %}>
             {% set value = field.label ? field.label|trans : field.name|humanize|trans %}
             {% if field.sortable %}
-                <a href="{{ grid.filter.generateSortUri(field, field.oppositeSortDirection) }}" class="sortable">
+                <a id="grid-{{ grid.name }}-sort-{{ field.name }}" href="{{ grid.filter.generateSortUri(field, field.oppositeSortDirection) }}" class="sortable">
                     <span>
                         {{ value }}
                         {% if not field.sortDirection %}

@@ -11,8 +11,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class Field
 {
-    const SORT_ASC  = 'ASC';
-    const SORT_DESC = 'DESC';
+    const SORT_ASC  = 'asc';
+    const SORT_DESC = 'desc';
 
     protected $name;
     protected $label;

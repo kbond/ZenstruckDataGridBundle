@@ -72,7 +72,7 @@ class DoctrineORMExecutor implements ExecutorInterface
 
             // do sort
             if (($order = $field->getSortDirection()) && $field->isSortable()) {
-                $this->qb->addOrderBy(sprintf('%s.%s', $this->dqlAlias, $field->getName()), $order);
+                $this->qb->addOrderBy(sprintf('%s.%s', $this->dqlAlias, $field->getName()), strtoupper($order));
             }
         }
 
