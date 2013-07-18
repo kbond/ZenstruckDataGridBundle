@@ -2,6 +2,7 @@
 
 namespace Zenstruck\DataGridBundle\Executor;
 
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Zenstruck\DataGridBundle\Field\FieldCollection;
@@ -56,10 +57,17 @@ class DoctrineORMExecutor implements ExecutorInterface
         foreach ($fieldCollection->all() as $field) {
             // do filters
             if ($value = $field->getFilterValue()) {
-                $paramName = sprintf(':%s_field', $field->getName());
-                $this->qb->andWhere(sprintf('%s.%s = %s', $this->dqlAlias, $field->getName(), $paramName))
-                    ->setParameter($paramName, $value);
-                ;
+                $fieldName = $field->getName();
+                $method = sprintf('filter%s', ucfirst(Inflector::classify($fieldName)));
+
+                if (method_exists($this, $method)) {
+                    $this->$method($value, $field);
+                } else {
+                    $paramName = sprintf(':%s_field', $field->getName());
+                    $this->qb->andWhere(sprintf('%s.%s = %s', $this->dqlAlias, $field->getName(), $paramName))
+                        ->setParameter($paramName, $value);
+                    ;
+                }
             }
 
             // do sort
