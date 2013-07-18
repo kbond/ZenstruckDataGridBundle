@@ -35,6 +35,14 @@ class RequestFilter implements PagerFilterInterface
         $this->sortParam = $sortParam;
         $this->route = $this->request->get('_route');
         $this->routeParams = array_merge($this->request->query->all(), $this->request->attributes->get('_route_params', array()));
+
+        if (!isset($this->routeParams[$this->sortParam])) {
+            $this->routeParams[$this->sortParam] = array();
+        }
+
+        if (!isset($this->routeParams[$this->filterParam])) {
+            $this->routeParams[$this->filterParam] = array();
+        }
     }
 
     /**
@@ -43,24 +51,27 @@ class RequestFilter implements PagerFilterInterface
      */
     public function filter(FieldCollection $fieldCollection)
     {
-        $filters = $this->request->query->get($this->filterParam, array());
-        $sorts = $this->request->query->get($this->sortParam, array());
-
-        if (count($sorts)) {
+        if (count($this->routeParams[$this->sortParam])) {
             // clear default sorts
             $fieldCollection->clearSorts();
         }
 
-        return $fieldCollection
-            ->setFilterValues($filters)
-            ->setSortDirections($sorts)
+        $fieldCollection = $fieldCollection
+            ->setFilterValues($this->routeParams[$this->filterParam])
+            ->setSortDirections($this->routeParams[$this->sortParam])
         ;
+
+        // normalize filter params
+        $this->routeParams[$this->filterParam] = $fieldCollection->buildFilterArray();
+
+        return $fieldCollection;
     }
 
     public function generateSortUri($field, $direction)
     {
         $routeParams = $this->routeParams;
 
+        // remove all sorts first
         if ($this->isSorted()) {
             unset($routeParams[$this->sortParam]);
         }
@@ -112,12 +123,12 @@ class RequestFilter implements PagerFilterInterface
 
     public function isSorted()
     {
-        return isset($this->routeParams[$this->sortParam]);
+        return (bool) count($this->routeParams[$this->sortParam]);
     }
 
     public function isFiltered()
     {
-        return isset($this->routeParams[$this->filterParam]);
+        return (bool) count($this->routeParams[$this->filterParam]);
     }
 
     public function getCurrentPage()

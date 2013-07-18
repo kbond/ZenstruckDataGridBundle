@@ -48,9 +48,9 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $field->setFilterValue('baz');
         $this->assertEquals('baz', $field->getFilterValue());
 
-        $this->setExpectedException('RuntimeException');
         $field = new Field('foo');
         $field->setFilterValue('baz');
+        $this->assertNull($field->getFilterValue());
     }
 
     public function testSetSortDirection()
@@ -62,18 +62,18 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Field::SORT_DESC, $field->getSortDirection());
 
         // set non sortable field
-        $this->setExpectedException('RuntimeException');
         $field = new Field('foo');
         $field->setSortDirection(Field::SORT_DESC);
+        $this->assertNull($field->getSortDirection());
     }
 
     public function testSetInvalidSortDirection()
     {
-        $this->setExpectedException('InvalidArgumentException');
         $field = new Field('foo', array(
             'sortable' => true
         ));
         $field->setSortDirection('foo');
+        $this->assertNull($field->getSortDirection());
     }
 
     public function testGetOppositeSortDirection()

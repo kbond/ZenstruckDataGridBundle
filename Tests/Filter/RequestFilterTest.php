@@ -16,12 +16,12 @@ class RequestFilterTest extends \PHPUnit_Framework_TestCase
     {
         $filter = $this->createRequestFilter(Request::create(sprintf('/foo?%s[foo]=baz', RequestFilter::PARAM_FILTER)));
 
-        $fieldCollection = new FieldCollection(array(
+        /*$fieldCollection = new FieldCollection(array(
             new Field('foo'),
             new Field('bar', array('label' => 'baz'))
         ));
         $results = $filter->filter($fieldCollection);
-        $this->assertCount(2, $results);
+        $this->assertCount(2, $results);*/
 
         $fieldCollection = new FieldCollection(array(
             new Field('foo', array('filterable' => true)),
@@ -58,6 +58,7 @@ class RequestFilterTest extends \PHPUnit_Framework_TestCase
             new Field('bar')
         ));
         $results = $filter->filter($fieldCollection);
+
         $this->assertEquals(Field::SORT_DESC, $results->get('foo')->getSortDirection());
 
         // invalid sort

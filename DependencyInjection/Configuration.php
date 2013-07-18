@@ -72,6 +72,15 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->booleanNode('filterable')->defaultFalse()->end()
                     ->scalarNode('filter_value')->defaultNull()->end()
+                    ->variableNode('filter_values')
+                        ->defaultNull()
+                        ->validate()
+                            ->ifTrue(function($value) {
+                                return !is_null($value) && !is_array($value);
+                            })
+                            ->thenInvalid('Must be either null or an array.')
+                        ->end()
+                    ->end()
                     ->booleanNode('sortable')->defaultFalse()->end()
                     ->scalarNode('sort_direction')
                         ->defaultNull()

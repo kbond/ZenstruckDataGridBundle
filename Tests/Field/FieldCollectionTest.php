@@ -98,7 +98,7 @@ class FieldCollectionTest extends \PHPUnit_Framework_TestCase
             'foo' => array('sortable' => true),
             'bar' => array()
         ));
-        $results = $fieldCollection->setSortDirections(array('foo' => Field::SORT_DESC));
+        $results = $fieldCollection->setSortDirections(array('foo' => Field::SORT_DESC, 'bar' => Field::SORT_DESC));
         $this->assertEquals(Field::SORT_DESC, $results->get('foo')->getSortDirection());
         $this->assertNull($results->get('bar')->getSortDirection());
     }

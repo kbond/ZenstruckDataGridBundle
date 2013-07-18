@@ -19,6 +19,7 @@ class Field
     protected $visible;
     protected $filterable;
     protected $filterValue;
+    protected $filterValues;
     protected $sortable;
     protected $sortDirection;
     protected $format;
@@ -38,6 +39,7 @@ class Field
                 'visible' => true,
                 'filterable' => false,
                 'filter_value' => null,
+                'filter_values' => null,
                 'sortable' => false,
                 'sort_direction' => null,
                 'format' => null,
@@ -49,7 +51,8 @@ class Field
                 'visible' => 'bool',
                 'filterable' => 'bool',
                 'filter_value' => array('string', 'null'),
-                'sortable' => 'bool',
+                'filter_values' => array('null', 'array'),
+                'sortable' => 'bool'
             ));
         $resolver->setAllowedValues(array(
                 'sort_direction' => static::getAvailableSortDirections()
@@ -61,6 +64,7 @@ class Field
         $this->visible = $options['visible'];
         $this->filterable = $options['filterable'];
         $this->filterValue = $options['filter_value'];
+        $this->filterValues = $options['filter_values'];
         $this->sortable = $options['sortable'];
         $this->sortDirection = $options['sort_direction'];
         $this->format = $options['format'];
@@ -144,11 +148,20 @@ class Field
      */
     public function setFilterValue($value)
     {
-        if (!$this->isFilterable()) {
-            throw new \RuntimeException(sprintf('The field "%s" is not filterable.', $this->name));
+        if (!$this->isFilterable() || ((is_array($this->filterValues) && !in_array($value, $this->filterValues)))) {
+            $this->filterValue = null;
+            return;
         }
 
         $this->filterValue = $value;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getFilterValues()
+    {
+        return $this->filterValues;
     }
 
     /**
@@ -167,15 +180,16 @@ class Field
      */
     public function setSortDirection($value)
     {
-        if (!in_array($value, static::getAvailableSortDirections())) {
-            throw new \InvalidArgumentException(sprintf('The value "%s" is not a valid sort direction', $value));
+        if (!$this->isSortable() || null === $value) {
+            $this->sortDirection = null;
+            return;
         }
 
-        if (!$this->isSortable()) {
-            throw new \RuntimeException(sprintf('The field "%s" is not sortable.', $this->name));
-        }
+        $value = strtolower($value);
 
-        $this->sortDirection = $value;
+        if (in_array($value, static::getAvailableSortDirections())) {
+            $this->sortDirection = $value;
+        }
     }
 
     /**

@@ -50,6 +50,22 @@ class FieldCollection implements \Countable, \IteratorAggregate
     }
 
     /**
+     * @return array
+     */
+    public function buildFilterArray()
+    {
+        $ret = array();
+
+        foreach ($this->fields as $field) {
+            if ($field->isFilterable() && $value = $field->getFilterValue()) {
+                $ret[$field->getName()] = $value;
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
      * @param array $sorts
      *
      * @return $this
@@ -57,16 +73,8 @@ class FieldCollection implements \Countable, \IteratorAggregate
     public function setSortDirections(array $sorts = array())
     {
         foreach ($sorts as $name => $direction) {
-            if ($this->has($name) && $this->get($name)->isSortable()) {
-                $field = $this->get($name);
-
-                if (!is_null($direction)) {
-                    $direction = strtolower($direction);
-                }
-
-                if (in_array($direction, Field::getAvailableSortDirections())) {
-                    $field->setSortDirection($direction);
-                }
+            if ($this->has($name)) {
+                $this->get($name)->setSortDirection($direction);
             }
         }
 
