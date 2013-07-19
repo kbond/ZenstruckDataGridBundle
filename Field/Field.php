@@ -25,6 +25,7 @@ class Field
     protected $format;
     protected $align;
     protected $default;
+    protected $searchable;
 
     public static function getAvailableSortDirections()
     {
@@ -44,7 +45,8 @@ class Field
                 'sort_direction' => null,
                 'format' => null,
                 'align' => null,
-                'default' => null
+                'default' => null,
+                'searchable' => false
             ));
         $resolver->setAllowedTypes(array(
                 'label' => array('string', 'null'),
@@ -70,6 +72,7 @@ class Field
         $this->format = $options['format'];
         $this->align = $options['align'];
         $this->default = $options['default'];
+        $this->searchable = $options['searchable'];
     }
 
     public function __toString()
@@ -115,6 +118,14 @@ class Field
     public function isSortable()
     {
         return $this->sortable;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSearchable()
+    {
+        return $this->searchable;
     }
 
     /**

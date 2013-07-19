@@ -61,6 +61,7 @@ class DoctrineORMExecutor implements ExecutorInterface
                 $method = sprintf('filter%s', ucfirst(Inflector::classify($fieldName)));
 
                 if (method_exists($this, $method)) {
+                    // call custom method
                     $this->$method($value, $field);
                 } else {
                     $paramName = sprintf(':%s_field', $field->getName());
@@ -73,6 +74,39 @@ class DoctrineORMExecutor implements ExecutorInterface
             // do sort
             if (($order = $field->getSortDirection()) && $field->isSortable()) {
                 $this->qb->addOrderBy(sprintf('%s.%s', $this->dqlAlias, $field->getName()), strtoupper($order));
+            }
+        }
+
+        // do search
+        if ($query = $fieldCollection->getSearchQuery()) {
+            $method = 'filterSearchQuery';
+
+            if (method_exists($this, $method)) {
+                // call custom method
+                $this->$method($query, $fieldCollection);
+            } else {
+                // replace wildcard "*" with "%"
+                $query = str_replace('*', '%', $query);
+
+                if (!preg_match('/%/', $query)) {
+                    // add wildcards to either side if none are set by user
+                    $query = '%'.$query.'%';
+                }
+
+                $expressions = array();
+
+                foreach ($fieldCollection->getSearchable() as $field) {
+                    $expressions[] = $this->qb->expr()->like(sprintf('%s.%s', $this->dqlAlias, $field->getName()), ':search_query');
+                }
+
+                if (count($expressions)) {
+                    $whereExpr = call_user_func_array(array($this->qb->expr(), 'orX'), $expressions);
+
+                    $this->qb
+                        ->andWhere($whereExpr)
+                        ->setParameter('search_query', $query)
+                    ;
+                }
             }
         }
 

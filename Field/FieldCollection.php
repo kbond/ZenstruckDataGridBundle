@@ -9,6 +9,7 @@ class FieldCollection implements \Countable, \IteratorAggregate
 {
     /** @var Field[] */
     protected $fields = array();
+    protected $searchQuery = null;
 
     /**
      * @param array|Field[] $fields
@@ -25,11 +26,44 @@ class FieldCollection implements \Countable, \IteratorAggregate
         }
     }
 
+    /**
+     * @return Field[]
+     */
     public function getVisible()
     {
         return array_filter($this->fields, function(Field $field) {
                 return $field->isVisible();
             });
+    }
+
+    /**
+     * @return Field[]
+     */
+    public function getSearchable()
+    {
+        return array_filter($this->fields, function(Field $field) {
+                return $field->isSearchable();
+            });
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return $this
+     */
+    public function setSearchQuery($query)
+    {
+        $this->searchQuery = $query;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSearchQuery()
+    {
+        return $this->searchQuery;
     }
 
     /**

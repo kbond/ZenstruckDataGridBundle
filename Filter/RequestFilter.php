@@ -18,6 +18,7 @@ class RequestFilter implements PagerFilterInterface
     const PARAM_FILTER       = 'filter';
     const PARAM_SORT         = 'sort';
     const PARAM_PAGE         = 'page';
+    const PARAM_QUERY        = 'query';
     const PARAM_MAX_PER_PAGE = 'max_per_page';
 
     protected $request;
@@ -43,6 +44,10 @@ class RequestFilter implements PagerFilterInterface
         if (!isset($this->routeParams[$this->filterParam])) {
             $this->routeParams[$this->filterParam] = array();
         }
+
+        if (!isset($this->routeParams[static::PARAM_QUERY])) {
+            $this->routeParams[static::PARAM_QUERY] = null;
+        }
     }
 
     /**
@@ -59,12 +64,23 @@ class RequestFilter implements PagerFilterInterface
         $fieldCollection = $fieldCollection
             ->setFilterValues($this->routeParams[$this->filterParam])
             ->setSortDirections($this->routeParams[$this->sortParam])
+            ->setSearchQuery($this->routeParams[static::PARAM_QUERY])
         ;
 
         // normalize filter params
         $this->routeParams[$this->filterParam] = $fieldCollection->buildFilterArray();
 
         return $fieldCollection;
+    }
+
+    public function getUri()
+    {
+        return $this->router->generate($this->route, $this->routeParams);
+    }
+
+    public function getSearchQuery()
+    {
+        return $this->routeParams[static::PARAM_QUERY];
     }
 
     public function generateSortUri($field, $direction)
@@ -106,6 +122,7 @@ class RequestFilter implements PagerFilterInterface
     {
         $routeParams = $this->routeParams;
 
+        unset($routeParams[static::PARAM_QUERY]);
         unset($routeParams[$this->sortParam]);
         unset($routeParams[$this->filterParam]);
 
@@ -119,6 +136,16 @@ class RequestFilter implements PagerFilterInterface
         }
 
         return null;
+    }
+
+    public function getFilters()
+    {
+        return $this->routeParams[static::PARAM_FILTER];
+    }
+
+    public function getSorts()
+    {
+        return $this->routeParams[static::PARAM_SORT];
     }
 
     public function isSorted()

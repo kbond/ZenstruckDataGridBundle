@@ -25,6 +25,16 @@ interface FilterInterface
     public function getFilterValue($name);
 
     /**
+     * @return string
+     */
+    public function getUri();
+
+    /**
+     * @return string
+     */
+    public function getSearchQuery();
+
+    /**
      * @param Field|string $field
      * @param string       $direction
      *
@@ -54,4 +64,14 @@ interface FilterInterface
      * @return bool
      */
     public function isFiltered();
+
+    /**
+     * @return array
+     */
+    public function getFilters();
+
+    /**
+     * @return array
+     */
+    public function getSorts();
 }
