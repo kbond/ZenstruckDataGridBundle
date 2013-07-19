@@ -23,26 +23,22 @@ class RequestFilter implements PagerFilterInterface
 
     protected $request;
     protected $router;
-    protected $filterParam;
-    protected $sortParam;
     protected $route;
     protected $routeParams;
 
-    public function __construct(Request $request, RouterInterface $router, $filterParam = self::PARAM_FILTER, $sortParam = self::PARAM_SORT)
+    public function __construct(Request $request, RouterInterface $router)
     {
         $this->request = $request;
         $this->router = $router;
-        $this->filterParam = $filterParam;
-        $this->sortParam = $sortParam;
         $this->route = $this->request->get('_route');
         $this->routeParams = array_merge($this->request->query->all(), $this->request->attributes->get('_route_params', array()));
 
-        if (!isset($this->routeParams[$this->sortParam])) {
-            $this->routeParams[$this->sortParam] = array();
+        if (!isset($this->routeParams[static::PARAM_SORT])) {
+            $this->routeParams[static::PARAM_SORT] = array();
         }
 
-        if (!isset($this->routeParams[$this->filterParam])) {
-            $this->routeParams[$this->filterParam] = array();
+        if (!isset($this->routeParams[static::PARAM_FILTER])) {
+            $this->routeParams[static::PARAM_FILTER] = array();
         }
 
         if (!isset($this->routeParams[static::PARAM_QUERY])) {
@@ -56,19 +52,19 @@ class RequestFilter implements PagerFilterInterface
      */
     public function filter(FieldCollection $fieldCollection)
     {
-        if (count($this->routeParams[$this->sortParam])) {
+        if (count($this->routeParams[static::PARAM_SORT])) {
             // clear default sorts
             $fieldCollection->clearSorts();
         }
 
         $fieldCollection = $fieldCollection
-            ->setFilterValues($this->routeParams[$this->filterParam])
-            ->setSortDirections($this->routeParams[$this->sortParam])
+            ->setFilterValues($this->routeParams[static::PARAM_FILTER])
+            ->setSortDirections($this->routeParams[static::PARAM_SORT])
             ->setSearchQuery($this->routeParams[static::PARAM_QUERY])
         ;
 
         // normalize filter params
-        $this->routeParams[$this->filterParam] = $fieldCollection->buildFilterArray();
+        $this->routeParams[static::PARAM_FILTER] = $fieldCollection->buildFilterArray();
 
         return $fieldCollection;
     }
@@ -89,14 +85,14 @@ class RequestFilter implements PagerFilterInterface
 
         // remove all sorts first
         if ($this->isSorted()) {
-            unset($routeParams[$this->sortParam]);
+            unset($routeParams[static::PARAM_SORT]);
         }
 
         if ($field instanceof Field) {
             $field = $field->getName();
         }
 
-        $propertyPath = new PropertyPath(sprintf('[%s][%s]', $this->sortParam, $field));
+        $propertyPath = new PropertyPath(sprintf('[%s][%s]', static::PARAM_SORT, $field));
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $propertyAccessor->setValue($routeParams, $propertyPath, $direction);
 
@@ -111,7 +107,7 @@ class RequestFilter implements PagerFilterInterface
             $field = $field->getName();
         }
 
-        $propertyPath = new PropertyPath(sprintf('[%s][%s]', $this->filterParam, $field));
+        $propertyPath = new PropertyPath(sprintf('[%s][%s]', static::PARAM_FILTER, $field));
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
         $propertyAccessor->setValue($routeParams, $propertyPath, $value);
 
@@ -123,16 +119,16 @@ class RequestFilter implements PagerFilterInterface
         $routeParams = $this->routeParams;
 
         unset($routeParams[static::PARAM_QUERY]);
-        unset($routeParams[$this->sortParam]);
-        unset($routeParams[$this->filterParam]);
+        unset($routeParams[static::PARAM_SORT]);
+        unset($routeParams[static::PARAM_FILTER]);
 
         return $this->router->generate($this->route, $routeParams);
     }
 
     public function getFilterValue($name)
     {
-        if (isset($this->routeParams[$this->filterParam][$name])) {
-            return $this->routeParams[$this->filterParam][$name];
+        if (isset($this->routeParams[static::PARAM_FILTER][$name])) {
+            return $this->routeParams[static::PARAM_FILTER][$name];
         }
 
         return null;
@@ -150,12 +146,12 @@ class RequestFilter implements PagerFilterInterface
 
     public function isSorted()
     {
-        return (bool) count($this->routeParams[$this->sortParam]);
+        return (bool) count($this->routeParams[static::PARAM_SORT]);
     }
 
     public function isFiltered()
     {
-        return (bool) count($this->routeParams[$this->filterParam]);
+        return (bool) count($this->routeParams[static::PARAM_FILTER]);
     }
 
     public function getCurrentPage()

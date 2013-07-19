@@ -64,8 +64,8 @@ class DoctrineORMExecutor implements ExecutorInterface
                     // call custom method
                     $this->$method($value, $field);
                 } else {
-                    $paramName = sprintf(':%s_field', $field->getName());
-                    $this->qb->andWhere(sprintf('%s.%s = %s', $this->dqlAlias, $field->getName(), $paramName))
+                    $paramName = sprintf(':%s_field', $fieldName);
+                    $this->qb->andWhere(sprintf('%s.%s = %s', $this->dqlAlias, $fieldName, $paramName))
                         ->setParameter($paramName, $value);
                     ;
                 }
