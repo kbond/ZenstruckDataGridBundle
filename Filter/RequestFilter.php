@@ -125,6 +125,17 @@ class RequestFilter implements PagerFilterInterface
         return $this->router->generate($this->route, $routeParams);
     }
 
+    public function generateSearchQueryUri($query)
+    {
+        $routeParams = $this->routeParams;
+
+        $propertyPath = new PropertyPath(sprintf('[%s]', static::PARAM_QUERY));
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $propertyAccessor->setValue($routeParams, $propertyPath, $query);
+
+        return $this->router->generate($this->route, $routeParams);
+    }
+
     public function getFilterValue($name)
     {
         if (isset($this->routeParams[static::PARAM_FILTER][$name])) {

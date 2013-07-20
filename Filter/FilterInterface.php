@@ -51,6 +51,13 @@ interface FilterInterface
     public function generateFilterUri($field, $value);
 
     /**
+     * @param string $query
+     *
+     * @return string
+     */
+    public function generateSearchQueryUri($query);
+
+    /**
      * @return string
      */
     public function generateResetUri();
