@@ -17,7 +17,8 @@
     },
     "suggest": {
         "white-october/pagerfanta-bundle": "For paginated grids.",
-        "zenstruck/resource-bundle": "For creating RESTful cruds."
+        "zenstruck/resource-bundle": "For creating RESTful cruds.",
+        "phpexcel/phpexcel": "For exporting datagrids"
     },
     "autoload": {
         "psr-0": { "Zenstruck\\DataGridBundle": "" }
