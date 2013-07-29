@@ -15,6 +15,14 @@ zenstruck_datagrid:
 
     # The default template to use when using the twig grid() function.
     default_template:     ZenstruckDataGridBundle:Twitter:blocks.html.twig
+    export:
+        enabled:              false
+        base_dir:             %kernel.cache_dir%/export
+        global_options:       []
+        types:
+            csv:                  true
+            xls:                  true
+            xlsx:                 true
     grids:
 
         # Prototype
@@ -25,6 +33,7 @@ zenstruck_datagrid:
 
             # The service id for the generated grid. By default it is: "<bundle_prefix>.grid.<grid_name>".
             service_id:           ~
+            grid_class:           ~
 
             # Customize the grid executor (must implement ExecutorInterface)
             executor_service:     ~
@@ -41,8 +50,10 @@ zenstruck_datagrid:
                     visible:              true
                     filterable:           false
                     filter_value:         ~
+                    filter_values:        ~
+                    searchable:           false
                     sortable:             false
-                    sort_direction:       ASC
+                    sort_direction:       ~
                     format:               ~
                     align:                ~
                     default:              ~

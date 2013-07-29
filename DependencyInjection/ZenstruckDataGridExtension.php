@@ -24,8 +24,25 @@ class ZenstruckDataGridExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.xml');
-
         $container->setParameter('zenstruck_datagrid.default_template', $config['default_template']);
+
+        if ($config['export']['enabled']) {
+            $container->setParameter('zenstruck_datagrid.export_base_dir', $config['export']['base_dir']);
+            $container->setParameter('zenstruck_datagrid.export_global_options', $config['export']['global_options']);
+            $loader->load('export/service.xml');
+
+            if ($config['export']['types']['csv']) {
+                $loader->load('export/csv.xml');
+            }
+
+            if ($config['export']['types']['xls']) {
+                $loader->load('export/xls.xml');
+            }
+
+            if ($config['export']['types']['xlsx']) {
+                $loader->load('export/xlsx.xml');
+            }
+        }
 
         $filterDef = $container->getDefinition('zenstruck_datagrid.filter');
         $pagerDef = $container->getDefinition('zenstruck_datagrid.pager');
