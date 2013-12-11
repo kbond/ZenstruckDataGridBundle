@@ -31,7 +31,7 @@ class FieldCollection implements \Countable, \IteratorAggregate
      */
     public function getVisible()
     {
-        return array_filter($this->fields, function(Field $field) {
+        return array_filter($this->fields, function (Field $field) {
                 return $field->isVisible();
             });
     }
@@ -41,7 +41,7 @@ class FieldCollection implements \Countable, \IteratorAggregate
      */
     public function getSearchable()
     {
-        return array_filter($this->fields, function(Field $field) {
+        return array_filter($this->fields, function (Field $field) {
                 return $field->isSearchable();
             });
     }
@@ -120,7 +120,7 @@ class FieldCollection implements \Countable, \IteratorAggregate
      */
     public function clearSorts()
     {
-        return $this->forAll(function(Field $field) {
+        return $this->forAll(function (Field $field) {
                 if ($field->isSortable()) {
                     $field->setSortDirection(null);
                 }
@@ -133,7 +133,7 @@ class FieldCollection implements \Countable, \IteratorAggregate
      */
     public function clearFilters()
     {
-        return $this->forAll(function(Field $field) {
+        return $this->forAll(function (Field $field) {
                 if ($field->isFilterable()) {
                     $field->setFilterValue(null);
                 }

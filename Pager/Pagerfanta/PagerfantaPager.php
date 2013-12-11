@@ -72,7 +72,7 @@ abstract class PagerfantaPager implements PagerInterface
     }
 
     /**
-     * @param FieldCollection $fields
+     * @param FieldCollection   $fields
      * @param ExecutorInterface $executor
      *
      * @return AdapterInterface

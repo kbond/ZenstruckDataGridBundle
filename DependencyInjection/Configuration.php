@@ -90,7 +90,7 @@ class Configuration implements ConfigurationInterface
                         ->variableNode('filter_values')
                             ->defaultNull()
                             ->validate()
-                                ->ifTrue(function($value) {
+                                ->ifTrue(function ($value) {
                                     return !is_null($value) && !is_array($value);
                                 })
                                 ->thenInvalid('Must be either null or an array.')
@@ -102,7 +102,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultNull()
                             ->validate()
                                 ->ifNotInArray(Field::getAvailableSortDirections())
-                                ->thenInvalid(sprintf('sort_direction must be one of: %s', implode(', ', array_map(function($value) {
+                                ->thenInvalid(sprintf('sort_direction must be one of: %s', implode(', ', array_map(function ($value) {
                                         return is_null($value) ? 'null' : sprintf('"%s"', $value);
                                     }, Field::getAvailableSortDirections()))))
                             ->end()

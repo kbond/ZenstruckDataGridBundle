@@ -161,7 +161,7 @@ class GridExtension extends \Twig_Extension
 
         throw new \InvalidArgumentException(
             sprintf('Block "%s" doesn\'t exist in template "%s".', $name,
-                implode(', ', array_map(function(\Twig_Template $template) {
+                implode(', ', array_map(function (\Twig_Template $template) {
                             return $template->getTemplateName();
                         }, $this->getTemplates()
                     )))

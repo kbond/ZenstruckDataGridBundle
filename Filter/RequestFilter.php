@@ -47,7 +47,7 @@ class RequestFilter implements PagerFilterInterface
     }
 
     /**
-     * @param FieldCollection $fieldCollection
+     * @param  FieldCollection $fieldCollection
      * @return FieldCollection
      */
     public function filter(FieldCollection $fieldCollection)

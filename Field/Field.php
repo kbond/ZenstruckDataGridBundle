@@ -4,7 +4,6 @@ namespace Zenstruck\DataGridBundle\Field;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -161,6 +160,7 @@ class Field
     {
         if (!$this->isFilterable() || ((is_array($this->filterValues) && !in_array($value, $this->filterValues)))) {
             $this->filterValue = null;
+
             return;
         }
 
@@ -193,6 +193,7 @@ class Field
     {
         if (!$this->isSortable() || null === $value) {
             $this->sortDirection = null;
+
             return;
         }
 
