@@ -13,7 +13,7 @@
     ],
     "require": {
         "symfony/symfony": "~2.3",
-        "doctrine/inflector": "~1.0.0"
+        "doctrine/inflector": "~1.0"
     },
     "suggest": {
         "white-october/pagerfanta-bundle": "For paginated grids.",
