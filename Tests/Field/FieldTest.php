@@ -34,9 +34,11 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($field->isVisible());
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testInvalidOption()
     {
-        $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\InvalidOptionsException');
         $field = new Field('foo', array('baz' => 'bar'));
     }
 
