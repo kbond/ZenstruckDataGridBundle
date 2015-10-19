@@ -6,7 +6,7 @@ Provides a sortable/filterable/paginated datagrid for your entities.
 
 [![Screenshot][1]][2]
 
-[View Demo][2]
+[View Example Source Code][2]
 
 ## Full Default Configuration
 
@@ -67,4 +67,4 @@ zenstruck_datagrid:
 * split out datagrid functionality into a separate library
 
 [1]: https://lh5.googleusercontent.com/-iUd_BIQr-W4/Uea71hXUX8I/AAAAAAAAKJo/VOsEvnMbq50/w956-h296-no/datagrid.png
-[2]: http://sandbox.zenstruck.com/articles
+[2]: https://github.com/kbond/sandbox
